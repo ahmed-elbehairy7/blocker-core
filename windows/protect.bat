@@ -16,10 +16,10 @@ if %errorLevel% == 0 (
 for /f "tokens=5 delims= " %%i in ('netsh interface ip show interfaces ^| findstr "connected"') do (
 
     @rem setting primary dns
-    netsh interface ip set dns %%i static 16.24.111.209
+    netsh interface ip set dns %%i static {{primary-dns}}
 
     @rem setting secondary dns
-    netsh interface ip add dns name="%%i" 16.24.202.94 index=2
+    netsh interface ip add dns name="%%i" {{secondary-dns}} index=2
 
     echo a new interface is protected!!
 )
