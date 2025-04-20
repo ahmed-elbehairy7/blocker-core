@@ -1,0 +1,1 @@
+gh release create %1 --generate-notes .\windows\high.bat#windows/high.bat .\windows\low.bat#windows/low.bat
