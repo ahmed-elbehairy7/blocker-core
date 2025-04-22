@@ -3,7 +3,7 @@
 :isAdmin
 :: Check for admin rights
 NET SESSION >nul 2>&1
-if %errorLevel% == 0 (
+if %errorlevel% == 0 (
     echo protecting the device...
 ) else (
     echo Requesting administrator permissions...
@@ -12,14 +12,19 @@ if %errorLevel% == 0 (
     exit /b
 )
 
+set /a layer=1
 
 @rem hosts file script
 
 :hostsFileScript
+echo applying layer %layer% protection
 set file=C:\Windows\System32\drivers\etc\hosts
 
 findstr /i /c:"#mafazaa-hosts-start" "%file%" >nul
 if %errorlevel% equ 0 (
+    
+    echo protection layer %layer% already exists
+
     goto regEditChromeScript
 ) else (    
     echo #mafazaa-hosts-start >> %file%
@@ -224,6 +229,8 @@ if %errorlevel% equ 0 (
 
     echo #mafazaa-hosts-end >> %file%
 
+    echo protection layer %layer% is applied successfully
+
     goto regEditChromeScript
 
 )
@@ -231,38 +238,48 @@ if %errorlevel% equ 0 (
 
 @rem chrome script from the registry editor
 :regEditChromeScript
-echo protecting chrome...
+set /a layer=%layer%+1
+
+echo applying layer %layer% protection
 set k=HKLM\SOFTWARE\Policies\Google\Chrome
 reg query "%k%" >nul 2>&1 || (
     reg add "%k%" /f
 )
 reg add "%k%" /v "DnsOverHttpsMode" /t REG_SZ /d "automatic" /f
 reg add "%k%" /v "DnsOverHttpsTemplates" /t REG_SZ /d "https://low-dns.mafazaa.com" /f
-echo finished protecting chrome successfully
+echo protection layer %layer% is applied successfully
 
 
 @rem brave script from the registry editor
 :regEditBraveScript
-echo protecting brave...
+set /a layer=%layer%+1
+
+echo applying layer %layer% protection
 set k=HKLM\Software\Policies\BraveSoftware\Brave
 reg query "%k%" >nul 2>&1 || (
     reg add "%k%" /f
 )
 reg add "%k%" /v "DnsOverHttpsMode" /t REG_SZ /d "automatic" /f
 reg add "%k%" /v "DnsOverHttpsTemplates" /t REG_SZ /d "https://low-dns.mafazaa.com" /f
-echo finished protecting brave successfully
+echo protection layer %layer% is applied successfully
 
 
 @rem netsh script
 :netshScript
+setlocal enableDelayedExpansion
+
+
 for /f "tokens=5 delims= " %%i in ('netsh interface ip show interfaces ^| findstr "connected"') do (
 
+    call set /a layer=layer+1
+    
     netsh interface ip set dns %%i static 16.24.111.209
 
     netsh interface ip add dns name="%%i" 16.24.202.94 index=2
 
-    echo a new interface is protected!!
+    echo layer !layer! is applied successfully
 )
-
-echo everything is ok now! you can exit
+echo.
+echo.
+echo %layer% layers of protection are applied on the device successfully! you can now exit
 pause
