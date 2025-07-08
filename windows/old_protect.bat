@@ -217,22 +217,16 @@ if %errorlevel% equ 0 (
     echo 216.239.38.120 www.google.co.zm >> %file%
     echo 216.239.38.120 www.google.co.zw >> %file%
     echo 216.239.38.120 www.google.cat >> %file%
+    echo 216.239.38.120 www.youtube.com >> %file%
+    echo 216.239.38.120 m.youtube.com >> %file%
+    echo 216.239.38.120 youtubei.googleapis.com >> %file%
+    echo 216.239.38.120 youtube.googleapis.com >> %file%
+    echo 216.239.38.120 www.youtube-nocookie.com >> %file%
     echo 20.207.72.188 duckduckgo.com >> %file%
     echo 204.79.197.220 www.bing.com bing.com >> %file%
     echo 204.79.197.220 www2.bing.com >> %file%
     echo 204.79.197.220 www3.bing.com >> %file%
 
-    :: Enable youtube domains
-    echo enabling youtube
-    echo #enable-youtube-domains-start >> %file%
-    
-    echo 172.217.19.142	www.youtube.com >> %file%
-    echo 142.250.200.238 m.youtube.com >> %file%
-    echo 172.217.21.10 youtubei.googleapis.com >> %file%
-    echo 172.217.21.10 youtube.googleapis.com >> %file%
-    echo 142.250.201.46 www.youtube-nocookie.com >> %file%
-
-    echo #enable-youtube-domains-end >> %file%
     echo #mafazaa-hosts-end >> %file%
 
     echo protection layer %layer% is applied successfully
