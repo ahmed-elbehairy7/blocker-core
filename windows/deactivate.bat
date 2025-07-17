@@ -14,46 +14,6 @@ if %errorlevel% == 0 (
 
 set /a layer=1
 
-@rem hosts file script
-
-:hostsFileScript
-echo applying layer %layer% protection
-set file=C:\Windows\System32\drivers\etc\hosts
-
-findstr /i /c:"#mafazaa-hosts-start" "%file%" >nul
-if %errorlevel% equ 0 (
-    
-    echo protection layer %layer% already exists
-
-    goto regEditChromeScript
-) else (    
-    :: Create a temporary file
-    set temp_file=%file%.tmp
-
-    :: Read the hosts file line by line
-    set "skip_lines=false"
-    for /f "usebackq delims=" %%L in ("%file%") do (
-        if "%%L" equ "#mafazaa-hosts-start" (
-            set "skip_lines=true"
-        ) else if "%%L" equ "#mafazaa-hosts-end" (
-            set "skip_lines=false"
-        ) else (
-            if "!skip_lines!" equ "false" (
-                echo %%L >> "%temp_file%"
-            )
-        )
-    )
-
-    :: Replace the original hosts file with the temporary file
-    move /Y "%temp_file%" "%file%"
-
-    echo protection layer %layer% is removed successfully
-
-    goto regEditChromeScript
-
-)
-
-
 @rem chrome script from the registry editor
 :regEditChromeScript
 set /a layer=%layer%+1
