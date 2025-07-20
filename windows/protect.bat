@@ -74,11 +74,9 @@
     :: Check if called from command line or internally
     if /i "%~1"=="add_domain" (
         :: Called from command line, shift arguments
-        echo called from command line
         set "text_to_add=%~2 %~3"
     ) else (
         :: Called internally
-        echo called internally
         set "text_to_add=%~1"
     )
 
@@ -91,8 +89,6 @@
 
     :: Assign arguments to variables
     set "file_path=%SystemRoot%\System32\drivers\etc\hosts"
-
-    echo adding %text_to_add%
 
     :: Check if the text already exists in the file
     findstr /x /c:"%text_to_add%" "%file_path%" >nul
@@ -200,8 +196,6 @@
     @rem chrome script from the registry editor
     :regEditChromeScript
     set /a layer=1
-
-    echo %primaryAddress% %secondaryAddress% %DnsOverHttps%
 
     echo applying layer %layer% protection
     set k=HKLM\SOFTWARE\Policies\Google\Chrome
